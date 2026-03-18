@@ -66,12 +66,21 @@ export class Shared {
   myStudentSub$: BehaviorSubject<StudentDetails[]> = new BehaviorSubject(this.students);
 
 
-  getStudentList(stdname?: string) {
+  getStudentList(stdname?: string,stdnumber?:any) {
     return this.myStudentSub$.pipe(
       map((studentdata: StudentDetails[]) => {
-        if (!stdname || stdname.trim() === '') return studentdata;
 
-        return studentdata.filter((std: any) => std.name.toLowerCase().includes(stdname.trim().toLowerCase()));
+        let result = studentdata;
+
+        if(stdname){
+          result = studentdata.filter((std: any) => std.name.toLowerCase().includes(stdname.trim().toLowerCase()));
+        }
+
+        if(stdnumber){
+          result = studentdata.slice(0,stdnumber);
+        }
+       
+        return result;
       })
     );
   }

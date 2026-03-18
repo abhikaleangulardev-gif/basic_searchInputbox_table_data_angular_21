@@ -12,6 +12,13 @@ import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
   styleUrl: './student-dashboard.css',
 })
 export class StudentDashboard implements OnInit {
+
+  mySearchText: string = '';
+  myLimit: number | null = null;
+
+  studentsnumbers = Array.from({ length: 50 }, (_, i) => i + 1);
+
+
   myStudentDetails: StudentDetails[] = [];
 
   myStudentSub$: Subject<any> = new Subject();
@@ -21,17 +28,14 @@ export class StudentDashboard implements OnInit {
   ngOnInit(): void {
     this.getStudentData();
 
-
     this.myStudentSub$.pipe(
       debounceTime(100),
       distinctUntilChanged(),
       switchMap((_searchName: string) => {
-        if (!_searchName || _searchName.trim() === '') {
-          return this.shared.getStudentList(); // full data
-        }
-        return this.shared.getStudentList(_searchName);
+        this.mySearchText = _searchName;
+        return this.shared.getStudentList(this.mySearchText, this.myLimit);
       }))
-    .subscribe({
+      .subscribe({
         next: (_searchName: any) => {
           console.log(_searchName);
           this.myStudentDetails = _searchName;
@@ -56,5 +60,15 @@ export class StudentDashboard implements OnInit {
     } else {
       this.myStudentSub$.next(result);
     }
+  }
+
+  onChangeStdNum(event: any) {
+    this.myLimit = +event.target.value;
+
+    this.shared.getStudentList(this.mySearchText, this.myLimit).subscribe({
+      next: (_resp: any) => {
+        this.myStudentDetails = _resp;
+      }
+    })
   }
 }
