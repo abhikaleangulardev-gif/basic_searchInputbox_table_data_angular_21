@@ -1,0 +1,40 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-sm-12 mb-4">
+            <input type="text" name="" id="" class="form-control" placeholder="Enter Your Name....." (input)="onInputStudentName($event)" appFocus>
+        </div>
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-bordered table-dark text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sr No.</th>
+                                <th scope="col">Id No.</th>
+                                <th scope="col">Std Name</th>
+                                <th scope="col">Std Marks</th>
+                                <th scope="col">Std City</th>
+                                <th scope="col">Std Branch</th>
+                                <th scope="col">Std College Name</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (std of myStudentDetails; track $index) {
+                            <tr>
+                                <td scope="row">{{$index + 1}}</td>
+                                <td scope="row">{{std.id}}</td>
+                                <td scope="row">{{std.name}}</td>
+                                <td scope="row">{{std.marks}}</td>
+                                <td scope="row">{{std.city}}</td>
+                                <td scope="row">{{std.branch}}</td>
+                                <td scope="row">{{std.collegeName}}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
